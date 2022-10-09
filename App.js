@@ -1,12 +1,44 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import * as React from 'react';
+import { StyleSheet, Text, View, SafeAreaView, StatusBar } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+
+
+function HomeScreen({navigation}){
+  return(
+    <View style={{flex:1, alignItems:'center', justifyContent:'center'}}>
+      <Text>Home</Text>
+      <TouchableOpacity onPress={()=>navigation.navigate('Details')}>
+        <Text>Go to details</Text>
+      </TouchableOpacity>
+    </View>
+
+  );
+}
+
+function DetailsScreen({navigation}){
+  return(
+    <View style={{flex:1, alignItems:'center', justifyContent:'center'}}>
+      <Text>Details</Text>
+      <TouchableOpacity onPress={()=>navigation.navigate('Home')}>
+        <Text>Go to home</Text>
+      </TouchableOpacity>
+    </View>
+
+  );
+}
+
+const Stack = createStackNavigator();
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <NavigationContainer>
+    <Stack.Navigator>
+      <Stack.Screen name="Home" component={HomeScreen} />
+      <Stack.Screen name="Details" component={DetailsScreen} />
+    </Stack.Navigator>
+    </NavigationContainer>
   );
 }
 
