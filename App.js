@@ -1,18 +1,37 @@
 import * as React from 'react';
-import { StyleSheet, Text, View, SafeAreaView, StatusBar } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import { TouchableOpacity, ScrollView } from 'react-native-gesture-handler';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import { StatusBar } from 'expo-status-bar';
 
 function HomeScreen({navigation}){
   return(
-    <View style={{flex:1, alignItems:'center', justifyContent:'center'}}>
-      <Text>Home</Text>
-      <TouchableOpacity onPress={()=> Tab.Navigator('About')}>
-        <Text>Go to About</Text>
-      </TouchableOpacity>
+    <View style={{padding:15, flex:1}}>
+      <ScrollView contentContainerStyle={{padding:20}} style={styles.container}>
+
+        <Text style={styles.textHeader}>Where do you want to navigate?</Text>
+
+        <TouchableOpacity style={styles.btnOptionsHome} onPress={() => navigation.navigate('Home')}>
+          <Ionicons name='md-home' size={29} color='white'/>
+          <Text style={{color:'white', marginTop:8, marginLeft:8}}>Home</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.btnOptionsHome} onPress={() => navigation.navigate('About')}>
+          <Ionicons name='ios-information-circle-outline' size={29} color='white'/>
+          <Text style={{color:'white', marginTop:8, marginLeft:8}}>About</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.btnOptionsHome} onPress={() => navigation.navigate('Portifolio')}>
+          <Ionicons name='md-list' size={29} color='white'/>
+          <Text style={{color:'white', marginTop:8, marginLeft:8}}>Portifolio</Text>
+        </TouchableOpacity>
+
+      </ScrollView>
+
+      
     </View>
 
   );
@@ -37,12 +56,12 @@ function PortifolioScreen({navigation}){
   );
 } 
 
-const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
 export default function App() {
   return (
     <NavigationContainer>
+    <StatusBar hidden/>  
     <Tab.Navigator
       screenOptions={({ route }) => ({
         tabBarIcon: ({ focused, color, size }) => {
@@ -61,7 +80,7 @@ export default function App() {
           // You can return any component that you like here!
           return <Ionicons name={iconName} size={size} color={color} />;
         },
-        tabBarActiveTintColor: 'tomato',
+        tabBarActiveTintColor: '#5f5380',
         tabBarInactiveTintColor: 'gray',
       })}
     >
@@ -75,9 +94,18 @@ export default function App() {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: 'white',
   },
+
+  textHeader: {
+    color:'#5f5380',
+    fontSize:24
+  },
+
+  btnOptionsHome: {
+    backgroundColor:'#5f5380',
+    padding:20,
+    marginTop:15,
+    flexDirection:'row'
+  }
 });
