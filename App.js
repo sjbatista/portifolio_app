@@ -1,11 +1,18 @@
+import 'react-native-gesture-handler';
 import * as React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import * as WebBrowser from 'expo-web-browser';
+import { StyleSheet, Text, View, Image, Dimensions } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
 import { TouchableOpacity, ScrollView } from 'react-native-gesture-handler';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { StatusBar } from 'expo-status-bar';
+import { useEffect,useState } from 'react';
+import { createStackNavigator } from '@react-navigation/stack';
+
+
+
+//Home <<
 
 function HomeScreen({navigation}){
   return(
@@ -14,50 +21,112 @@ function HomeScreen({navigation}){
 
         <Text style={styles.textHeader}>Where do you want to navigate?</Text>
 
-        <TouchableOpacity style={styles.btnOptionsHome} onPress={() => navigation.navigate('Home')}>
+        <TouchableOpacity style={styles.btnOptionsHome} onPress={() =>navigation.navigate('Home')}>
           <Ionicons name='md-home' size={29} color='white'/>
           <Text style={{color:'white', marginTop:8, marginLeft:8}}>Home</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.btnOptionsHome} onPress={() => navigation.navigate('About')}>
+        <TouchableOpacity style={styles.btnOptionsHome} onPress={() =>navigation.navigate('About')}>
           <Ionicons name='ios-information-circle-outline' size={29} color='white'/>
           <Text style={{color:'white', marginTop:8, marginLeft:8}}>About</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.btnOptionsHome} onPress={() => navigation.navigate('Portifolio')}>
+        <TouchableOpacity style={styles.btnOptionsHome} onPress={() =>navigation.navigate('Portifolio')}>
           <Ionicons name='md-list' size={29} color='white'/>
           <Text style={{color:'white', marginTop:8, marginLeft:8}}>Portifolio</Text>
         </TouchableOpacity>
 
       </ScrollView>
-
-      
     </View>
-
   );
 }
+//Home >>
 
-
+//About <<
 function AboutScreen({navigation}){
   return(
     <View style={{flex:1, alignItems:'center', justifyContent:'center'}}>
       <Text>About</Text>
     </View>
-
   );
 } 
+//About >>
 
-function PortifolioScreen({navigation}){
+//Portifolio <<
+function PortifolioScreen({navigation,route}){
+
+  const [images,setImages] = useState([
+    {
+      img: require('./resources/calculator_app.png'),
+      width:0,
+      height:0,
+      ratio:0,
+      link:'https://github.com/sjbatista/react_js_calculator'
+    },
+
+    {
+      img: require('./resources/timer_app.png'),
+      width:0,
+      height:0,
+      ratio:0,
+      link:'https://github.com/sjbatista/timer_app_react1'
+    }
+
+  ])
+
+  const [windowWidth,setWindowWidth] = useState(0);
+
+  useEffect(() => {
+    
+    let windowWidthTemp = Dimensions.get('window').width;
+    
+    setWindowWidth(windowWidthTemp - 30 - 40);
+
+    let newImages = images.filter(function(val){
+      let w = Image.resolveAssetSource(val.img).width;
+      let h = Image.resolveAssetSource(val.img).height;
+
+      val.width = w;
+      val.height = h;
+      val.ratio = h/w;
+
+      return val;
+
+    })
+
+    setImages(newImages);
+  }, []) //With '[]' as the second parameter, the 'use-effect' will be executed only once 
+
+  const openBrowserNow = async (link) =>{
+    let result = await WebBrowser.openBrowserAsync(link);
+  }
+
+
   return(
-    <View style={{flex:1, alignItems:'center', justifyContent:'center'}}>
-      <Text>Portifolio</Text>
-    </View>
+    <View style={{padding:15,flex:1}}>
+    <ScrollView contentContainerStyle={{padding:20}} style={styles.container}>
+      <Text style={styles.textHeader}>Latest projects</Text>
+      {
+        images.map(function(val){
+          return(
+            <View style={{marginTop:15}}>
+              <Image 
+              style={{ width:windowWidth, height:windowWidth*val.ratio, resizeMode:'stretch' }} source={val.img} />
 
+              <TouchableOpacity onPress={()=>openBrowserNow(val.link)} style={styles.btnOpenBrowser}><Text style={{textAlign:'center', color:'white', fontSize:18}}>Open the code on GitHub !</Text></TouchableOpacity>
+            </View>
+          );
+        })
+      }
+    </ScrollView>
+    </View>
   );
 } 
+//Portifolio >>
 
 const Tab = createBottomTabNavigator();
 
+//App <<
 export default function App() {
   return (
     <NavigationContainer>
@@ -91,6 +160,7 @@ export default function App() {
   </NavigationContainer>
   );
 }
+//App >>
 
 const styles = StyleSheet.create({
   container: {
@@ -107,5 +177,10 @@ const styles = StyleSheet.create({
     padding:20,
     marginTop:15,
     flexDirection:'row'
+  },
+
+  btnOpenBrowser: {
+    padding:8,
+    backgroundColor:'#5f5380'
   }
 });
