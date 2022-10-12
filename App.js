@@ -1,14 +1,15 @@
 import 'react-native-gesture-handler';
 import * as React from 'react';
 import * as WebBrowser from 'expo-web-browser';
-import { StyleSheet, Text, View, Image, Dimensions } from 'react-native';
+import { StyleSheet, Text, View, Image, Dimensions, TouchableOpacity } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
-import { TouchableOpacity, ScrollView } from 'react-native-gesture-handler';
+import { ScrollView } from 'react-native-gesture-handler';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { StatusBar } from 'expo-status-bar';
 import { useEffect,useState } from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
+import { WebView } from 'react-native-webview';
 
 
 
@@ -44,9 +45,36 @@ function HomeScreen({navigation}){
 
 //About <<
 function AboutScreen({navigation}){
+
+  const openModalContact = () =>{
+    alert('open contact !');
+  }
+
+  let windowWidthTemp = (Dimensions.get('window').width) * 0.5;
+
   return(
-    <View style={{flex:1, alignItems:'center', justifyContent:'center'}}>
-      <Text>About</Text>
+    <View style={{padding:15,flex:1}}>
+
+      <ScrollView contentContainerStyle={{padding:20, alignItems:'center'}} style={styles.container}>
+        <Image style={{width:windowWidthTemp, height:windowWidthTemp, marginTop:20, borderRadius:200}} source={{uri:'https://github.com/sjbatista.png'}} />
+        <View>
+          <Text style={{...styles.textHeader, marginTop:15}}>
+          👋 Hi, I'm Salomão.
+          </Text>
+          <Text style={{marginTop:15, fontSize:16, color:'#5f5380', textAlign:'left', marginBottom:15}}>
+          Developer in training, I am also a professional working in the Information Technology segment for 8 years, with experience in Analysis and Support, Microcomputers, Service-Desk, support for Printers and Multifunctionals, both in preventive and corrective maintenance, where I also developed device configuration networks and other peripherals.
+          </Text>
+        </View>
+
+        <TouchableOpacity onPress={()=>openModalContact()} style={styles.btnOpenBrowser}>
+          <Text style={{color:'white'}}>
+          Contact me!
+          </Text>
+          </TouchableOpacity>
+      </ScrollView>
+
+      
+
     </View>
   );
 } 
@@ -182,5 +210,9 @@ const styles = StyleSheet.create({
   btnOpenBrowser: {
     padding:8,
     backgroundColor:'#5f5380'
+  },
+
+  webViewStyle: {
+    flex:1
   }
 });
