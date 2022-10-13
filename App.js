@@ -8,8 +8,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { StatusBar } from 'expo-status-bar';
 import { useEffect,useState } from 'react';
-import { createStackNavigator } from '@react-navigation/stack';
-import { WebView } from 'react-native-webview';
+import Modal from './Modal.js';
 
 
 
@@ -46,17 +45,30 @@ function HomeScreen({navigation}){
 //About <<
 function AboutScreen({navigation}){
 
+  const [showModal, setShowModal] = useState(false);
+
   const openModalContact = () =>{
-    alert('open contact !');
+    setShowModal(!showModal);
   }
 
   let windowWidthTemp = (Dimensions.get('window').width) * 0.5;
 
   return(
+  <View style={{flex:1}}>
+
+    {
+      (showModal)?
+      <Modal showModal={showModal} setShowModal={setShowModal}></Modal>
+      :
+      <View></View>
+    }
+
     <View style={{padding:15,flex:1}}>
 
       <ScrollView contentContainerStyle={{padding:20, alignItems:'center'}} style={styles.container}>
+
         <Image style={{width:windowWidthTemp, height:windowWidthTemp, marginTop:20, borderRadius:200}} source={{uri:'https://github.com/sjbatista.png'}} />
+
         <View>
           <Text style={{...styles.textHeader, marginTop:15}}>
           👋 Hi, I'm Salomão.
@@ -70,12 +82,11 @@ function AboutScreen({navigation}){
           <Text style={{color:'white'}}>
           Contact me!
           </Text>
-          </TouchableOpacity>
+        </TouchableOpacity>
+
       </ScrollView>
-
-      
-
     </View>
+  </View>
   );
 } 
 //About >>
@@ -214,5 +225,6 @@ const styles = StyleSheet.create({
 
   webViewStyle: {
     flex:1
-  }
+  },
+
 });
