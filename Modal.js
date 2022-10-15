@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, TextInput } from 'react-native';
 import { useEffect,useState } from 'react';
+import {db} from './firebase.js'
 
 
 export default function Modal(props){
@@ -9,9 +10,11 @@ export default function Modal(props){
     const [message, setMessage]=useState('');
 
     const sendMessage = () =>{
-        alert('submit '+'function under construction !');
-        alert('Name field: '+name);
-        alert('Message field: '+message);
+        db.collection('contato').add({
+            name: name,
+            message: message
+        })
+        alert('Your message was sent!');
 
     }
 
