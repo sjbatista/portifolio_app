@@ -16,6 +16,9 @@ export default function Modal(props){
         })
         alert('Your message was sent!');
 
+        setMessage('');
+        setName('');
+
     }
 
 
@@ -29,12 +32,12 @@ export default function Modal(props){
                 <Text style={{...styles.textHeader, fontSize:15}}>
                 What is your name ?
                 </Text>
-                <TextInput style={styles.contactTextImput} numberOfLines={4} onChangeText={(text)=>setName(text)}></TextInput>
+                <TextInput value={name} style={styles.contactTextImput} numberOfLines={1} onChangeText={(text)=>setName(text)}></TextInput>
 
                 <Text style={{...styles.textHeader, fontSize:15, marginTop:10}}>
                 Message:
                 </Text>
-                <TextInput style={{...styles.contactTextImput, height:200, textAlignVertical:'top'}} numberOfLines={4} onChangeText={(text)=>setMessage(text)}></TextInput>
+                <TextInput  value={message} style={{...styles.contactTextImput, height:200, textAlignVertical:'top'}} numberOfLines={4} onChangeText={(text)=>setMessage(text)}></TextInput>
 
                 <TouchableOpacity onPress={()=>sendMessage()} style={{...styles.btnOpenBrowser, alignItems:'center', marginTop:10}}>
                     <Text style={{color:'white', fontSize:18}}>
@@ -116,6 +119,7 @@ const styles = StyleSheet.create({
         borderWidth:1,
         borderColor:'black',
         marginTop:10,
+        textAlignVertical:'top'
     }
 
   });
